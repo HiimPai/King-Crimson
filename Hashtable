@@ -7,28 +7,58 @@
 #include <time.h>
 #include <string.h>
 
+int main() {
 HashTable *table;
-struct stat fileStat;
+struct stat *fileStat;
+int result;
+
+char* date(time_t time){
+    char *ctime_no_nl;
+    time_t currentTime = time;
+    ctime_no_nl = strtok(ctime(&currentTime), "\n");
+    return ctime_no_nl;
+}
 
 void createTable() {
  enum cc_stat hsh = hashtable_new(&table);
+ if (hsh == CC_ERR_ALLOC) {
+  printf("polnareff");
+ }
 }
 
 void addHash (const char* pathname) {
- stat(pathname,&fileStat);
  enum cc_stat ulamog = hashtable_add(table, &pathname, &fileStat);
+ if(ulamog != CC_OK) {
+  printf("nani"); 
+ }
 }
 
 void printTable() {
  HashTableIter hti;
  hashtable_iter_init(&hti, table);
  TableEntry *entry;
- while (array_iter_next(&hti, &entry) != CC_ITER_END) {
-    printf("Goodbye Jojo");
+ while(hashtable_iter_next(&hti, &entry) != CC_ITER_END) {
+  printf("<%s> ",date(time(NULL)));
+  printf("<%d> ",fileStat ->st_uid);
+  printf("<%d> ",fileStat ->st_gid);
+  printf("<%ld> ",fileStat ->st_size);
+  printf((S_ISDIR(fileStat ->st_mode)) ? "<d" : "<-");
+  printf((fileStat ->st_mode & S_IRUSR) ? "r" : "-");
+  printf((fileStat ->st_mode & S_IWUSR) ? "w" : "-");
+  printf((fileStat ->st_mode & S_IXUSR) ? "x" : "-");
+  printf((fileStat ->st_mode & S_IRGRP) ? "r" : "-");
+  printf((fileStat ->st_mode & S_IWGRP) ? "w" : "-");
+  printf((fileStat ->st_mode & S_IXGRP) ? "x" : "-");
+  printf((fileStat ->st_mode & S_IROTH) ? "r" : "-");
+  printf((fileStat ->st_mode & S_IWOTH) ? "w" : "-");
+  printf((fileStat ->st_mode & S_IXOTH) ? "x>" : "->");
+  printf(" <%s> ",date(fileStat ->st_atime));
+  printf(" <%s> ",date(fileStat ->st_mtime));
+  printf(" <%s> \n",date(fileStat ->st_ctime));
+  printf("###");
  }
 }
 
-int main() {
  createTable();
  addHash("/home/luca/Desktop/eieh.c");
  printTable();
