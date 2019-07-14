@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <collectc/hashtable.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
+#include <string.h>
+
+HashTable *table;
+struct stat fileStat;
+
+void createTable() {
+ enum cc_stat hsh = hashtable_new(&table);
+}
+
+void addHash (const char* pathname) {
+ stat(pathname,&fileStat);
+ enum cc_stat ulamog = hashtable_add(table, &pathname, &fileStat);
+}
+
+void printTable() {
+ HashTableIter hti;
+ hashtable_iter_init(&hti, table);
+ TableEntry *entry;
+ while (array_iter_next(&hti, &entry) != CC_ITER_END) {
+    printf("Goodbye Jojo");
+ }
+}
+
+int main() {
+ createTable();
+ addHash("/home/luca/Desktop/eieh.c");
+ printTable();
+ return 0;
+}
