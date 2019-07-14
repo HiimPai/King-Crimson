@@ -9,7 +9,7 @@
 
 int main() {
 HashTable *table;
-struct stat *fileStat;
+struct stat *fileStat = malloc(sizeof(struct stat));
 int result;
 
 char* date(time_t time){
@@ -26,12 +26,13 @@ void createTable() {
  }
 }
 
-void addHash (const char* pathname) {
- enum cc_stat ulamog = hashtable_add(table, &pathname, &fileStat);
+void addHash (const char* pathname, struct stat *fs) {
+ stat(pathname, fs);
+ enum cc_stat ulamog = hashtable_add(table, pathname, fs);
  if(ulamog != CC_OK) {
   printf("nani"); 
  }
-}
+} 
 
 void printTable() {
  HashTableIter hti;
@@ -39,15 +40,31 @@ void printTable() {
  TableEntry *entry;
  while(hashtable_iter_next(&hti, &entry) != CC_ITER_END) {
   printf("<%s> ",date(time(NULL)));
-  printf("<%d> ",fileStat ->st_uid);
-  printf("<%d> ",fileStat ->st_gid);
-  printf("<%ld> ",fileStat ->st_size);
-  printf((S_ISDIR(fileStat ->st_mode)) ? "<d" : "<-");
-  printf((fileStat ->st_mode & S_IRUSR) ? "r" : "-");
-  printf((fileStat ->st_mode & S_IWUSR) ? "w" : "-");
-  printf((fileStat ->st_mode & S_IXUSR) ? "x" : "-");
-  printf((fileStat ->st_mode & S_IRGRP) ? "r" : "-");
-  printf((fileStat ->st_mode & S_IWGRP) ? "w" : "-");
+  printf("<%d> ",((struct stat*)(entry -> value)) ->st_uid);
+  printf("<%d> ",((struct stat*)(entry -> value)) ->st_gid);
+  printf("<%ld> ",((struct stat*)(entry -> value)) ->st_size);
+  printf((S_ISDIR(((struct stat*)(entry -> value)) ->st_mode)) ? "<d" : "<-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IRUSR) ? "r" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWUSR) ? "w" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXUSR) ? "x" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IRGRP) ? "r" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWGRP) ? "w" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXGRP) ? "x" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IROTH) ? "r" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWOTH) ? "w" : "-");
+  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXOTH) ? "x>" : "->");
+  printf(" <%s> ",date(((struct stat*)(entry -> value)) ->st_atime));
+  printf(" <%s> ",date(((struct stat*)(entry -> value)) ->st_mtime));
+  printf(" <%s> \n",date(((struct stat*)(entry -> value)) ->st_ctime));
+  printf("###");
+ }
+}
+
+ createTable();
+ addHash("/home/luca/Desktop/eieh.c", fileStat);
+ printTable();
+ return 0;
+}
   printf((fileStat ->st_mode & S_IXGRP) ? "x" : "-");
   printf((fileStat ->st_mode & S_IROTH) ? "r" : "-");
   printf((fileStat ->st_mode & S_IWOTH) ? "w" : "-");
