@@ -10,6 +10,7 @@
 int main() {
 HashTable *table;
 struct stat *fileStat = malloc(sizeof(struct stat));
+FILE* fout = fopen("/home/luca/Desktop/filestat.txt","w");
 int result;
 
 char* date(time_t time){
@@ -39,15 +40,34 @@ void printTable() {
  hashtable_iter_init(&hti, table);
  TableEntry *entry;
  while(hashtable_iter_next(&hti, &entry) != CC_ITER_END) {
-  printf("<%s> ",date(time(NULL)));
-  printf("<%d> ",((struct stat*)(entry -> value)) ->st_uid);
-  printf("<%d> ",((struct stat*)(entry -> value)) ->st_gid);
-  printf("<%ld> ",((struct stat*)(entry -> value)) ->st_size);
-  printf((S_ISDIR(((struct stat*)(entry -> value)) ->st_mode)) ? "<d" : "<-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IRUSR) ? "r" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWUSR) ? "w" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXUSR) ? "x" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IRGRP) ? "r" : "-");
+  fprintf(fout,"<%s> ",date(time(NULL)));
+  fprintf(fout,"<%d> ",((struct stat*)(entry -> value)) ->st_uid);
+  fprintf(fout,"<%d> ",((struct stat*)(entry -> value)) ->st_gid);
+  fprintf(fout,"<%ld> ",((struct stat*)(entry -> value)) ->st_size);
+  fprintf(fout,(S_ISDIR(((struct stat*)(entry -> value)) ->st_mode)) ? "<d" : "<-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IRUSR) ? "r" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IWUSR) ? "w" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IXUSR) ? "x" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IRGRP) ? "r" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IWGRP) ? "w" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IXGRP) ? "x" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IROTH) ? "r" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IWOTH) ? "w" : "-");
+  fprintf(fout,(((struct stat*)(entry -> value)) ->st_mode & S_IXOTH) ? "x>" : "->");
+  fprintf(fout," <%s> ",date(((struct stat*)(entry -> value)) ->st_atime));
+  fprintf(fout," <%s> ",date(((struct stat*)(entry -> value)) ->st_mtime));
+  fprintf(fout," <%s> \n",date(((struct stat*)(entry -> value)) ->st_ctime));
+  fprintf(fout,"###");
+ }
+}
+
+ createTable();
+ addHash("/home/luca/Desktop/eieh.c", fileStat);
+ addHash("/home/luca/Desktop/hashtable.c", fileStat);
+ addHash("/home/luca/Desktop/filestat.txt", fileStat); 
+ printTable();
+ return 0;
+}
   printf((((struct stat*)(entry -> value)) ->st_mode & S_IWGRP) ? "w" : "-");
   printf((((struct stat*)(entry -> value)) ->st_mode & S_IXGRP) ? "x" : "-");
   printf((((struct stat*)(entry -> value)) ->st_mode & S_IROTH) ? "r" : "-");
