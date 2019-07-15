@@ -40,6 +40,7 @@ void printTable() {
  hashtable_iter_init(&hti, table);
  TableEntry *entry;
  while(hashtable_iter_next(&hti, &entry) != CC_ITER_END) {
+  fprintf(fout,"# <%s>\n", (const char*)entry -> key);  
   fprintf(fout,"<%s> ",date(time(NULL)));
   fprintf(fout,"<%d> ",((struct stat*)(entry -> value)) ->st_uid);
   fprintf(fout,"<%d> ",((struct stat*)(entry -> value)) ->st_gid);
