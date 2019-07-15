@@ -68,36 +68,3 @@ void printTable() {
  printTable();
  return 0;
 }
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWGRP) ? "w" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXGRP) ? "x" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IROTH) ? "r" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IWOTH) ? "w" : "-");
-  printf((((struct stat*)(entry -> value)) ->st_mode & S_IXOTH) ? "x>" : "->");
-  printf(" <%s> ",date(((struct stat*)(entry -> value)) ->st_atime));
-  printf(" <%s> ",date(((struct stat*)(entry -> value)) ->st_mtime));
-  printf(" <%s> \n",date(((struct stat*)(entry -> value)) ->st_ctime));
-  printf("###");
- }
-}
-
- createTable();
- addHash("/home/luca/Desktop/eieh.c", fileStat);
- printTable();
- return 0;
-}
-  printf((fileStat ->st_mode & S_IXGRP) ? "x" : "-");
-  printf((fileStat ->st_mode & S_IROTH) ? "r" : "-");
-  printf((fileStat ->st_mode & S_IWOTH) ? "w" : "-");
-  printf((fileStat ->st_mode & S_IXOTH) ? "x>" : "->");
-  printf(" <%s> ",date(fileStat ->st_atime));
-  printf(" <%s> ",date(fileStat ->st_mtime));
-  printf(" <%s> \n",date(fileStat ->st_ctime));
-  printf("###");
- }
-}
-
- createTable();
- addHash("/home/luca/Desktop/eieh.c");
- printTable();
- return 0;
-}
