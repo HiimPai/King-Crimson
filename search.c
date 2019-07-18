@@ -114,7 +114,7 @@ void user(int uid) {
  }
 }
 
-void user(int gid) {
+void group(int gid) {
  FILE* fout = fopen("/home/luca/Desktop/filestat.txt","a+");
  HashTableIter hti;
  hashtable_iter_init(&hti, table);
