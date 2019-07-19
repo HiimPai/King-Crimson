@@ -11,8 +11,8 @@ struct stat *arrayFileStat;
 static int indexOfArray = 0;
 
 struct stat createArray(int sizeOfArray) {
-    arrayFileStat = realloc(arrayFileStat,sizeof(struct stat)sizeOfArray);
-    return *arrayFileStat;
+    arrayFileStat = realloc(arrayFileStat,sizeof(struct stat)*sizeOfArray);
+    return arrayFileStat;
 }
 
 void addToArray(struct stat statFile) {
