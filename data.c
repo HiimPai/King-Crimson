@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+#include "data.h"
 
 HashTable *table;
 struct stat *arrayFileStat;
